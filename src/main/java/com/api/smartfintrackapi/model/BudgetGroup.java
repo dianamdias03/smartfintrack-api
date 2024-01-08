@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -22,9 +24,13 @@ public class BudgetGroup {
 	
 	private BigDecimal budget;
 	
-	@OneToMany(mappedBy = "budgetGroup", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Expense> listExpense;
-
+	@OneToMany(mappedBy = "budgetGroup", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	private Set<CashFlow> listCashFlow;
+	
+	@ManyToOne
+    @JoinColumn(name = "userLoginId", nullable = false)
+    private UserLogin userLogin;
+	
 	public Long getId() {
 		return id;
 	}
@@ -57,11 +63,21 @@ public class BudgetGroup {
 		this.budget = budget;
 	}
 
-	public Set<Expense> getListExpense() {
-		return listExpense;
+	public Set<CashFlow> getListCashFlow() {
+		return listCashFlow;
 	}
 
-	public void setListExpense(Set<Expense> listExpense) {
-		this.listExpense = listExpense;
+	public void setListCashFlow(Set<CashFlow> listCashFlow) {
+		this.listCashFlow = listCashFlow;
 	}
+
+	public UserLogin getUserLogin() {
+		return userLogin;
+	}
+
+	public void setUserLogin(UserLogin userLogin) {
+		this.userLogin = userLogin;
+	}
+
+	
 }

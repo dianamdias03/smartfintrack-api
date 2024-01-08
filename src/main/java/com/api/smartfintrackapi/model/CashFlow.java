@@ -12,7 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Expense {
+public class CashFlow {
 	@jakarta.persistence.Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
@@ -23,11 +23,13 @@ public class Expense {
 	
 	private LocalDate creationDate;
 	
-	private LocalDate expiringDate;
+	private LocalDate transactionDate;
 	
 	private PaymentStatus paymentStatus;
 	
-	private BigDecimal expenseValue;
+	private BigDecimal cashFlowValue;
+	
+	private boolean isRevenue;
 	
 	@ManyToOne
     @JoinColumn(name = "budgetGroupId")
@@ -37,9 +39,10 @@ public class Expense {
     @JoinColumn(name = "categoryId")
     private Category category;
 	
-	/*@Transient
-    private BigDecimal remainingBudget;
-*/
+	@ManyToOne
+    @JoinColumn(name = "userLoginId", nullable = false)
+    private UserLogin userLogin;
+	
 	public Long getId() {
 		return id;
 	}
@@ -72,14 +75,6 @@ public class Expense {
 		this.creationDate = creationDate;
 	}
 
-	public LocalDate getExpiringDate() {
-		return expiringDate;
-	}
-
-	public void setExpiringDate(LocalDate expiringDate) {
-		this.expiringDate = expiringDate;
-	}
-
 	public PaymentStatus getPaymentStatus() {
 		return paymentStatus;
 	}
@@ -104,11 +99,37 @@ public class Expense {
 		this.budgetGroup = budgetGroup;
 	}
 
-	public BigDecimal getExpenseValue() {
-		return expenseValue;
+	public BigDecimal getCashFlowValue() {
+		return cashFlowValue;
 	}
 
-	public void setExpenseValue(BigDecimal expenseValue) {
-		this.expenseValue = expenseValue;
+	public void setCashFlowValue(BigDecimal cashFlowValue) {
+		this.cashFlowValue = cashFlowValue;
 	}
+
+	public LocalDate getTransactionDate() {
+		return transactionDate;
+	}
+
+	public void setTransactionDate(LocalDate transactionDate) {
+		this.transactionDate = transactionDate;
+	}
+
+	public boolean isRevenue() {
+		return isRevenue;
+	}
+
+	public void setRevenue(boolean isRevenue) {
+		this.isRevenue = isRevenue;
+	}
+
+	public UserLogin getUserLogin() {
+		return userLogin;
+	}
+
+	public void setUserLogin(UserLogin userLogin) {
+		this.userLogin = userLogin;
+	}
+	
+	
 }

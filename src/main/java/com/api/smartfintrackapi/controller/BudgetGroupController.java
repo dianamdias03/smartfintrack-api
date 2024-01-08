@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.smartfintrackapi.dtos.BudgetGroupDTO;
 import com.api.smartfintrackapi.model.BudgetGroup;
 import com.api.smartfintrackapi.repository.BudgetGroupRepository;
+import com.api.smartfintrackapi.service.BudgetGroupService;
 
 @RestController
 @RequestMapping(value="/api")
@@ -23,9 +25,12 @@ public class BudgetGroupController {
 	@Autowired
 	BudgetGroupRepository budgetGroupRepository;
 	
-	@GetMapping("/budgetGroups")
-	public List<BudgetGroup> listGroup(){
-		return budgetGroupRepository.findAll();
+	@Autowired
+	BudgetGroupService budgetGroupService;
+	
+	@GetMapping("/budgetGroups/{userLoginId}")
+	public List<BudgetGroupDTO> listGroup(@PathVariable Long userLoginId){
+		return budgetGroupService.findAllBudgetGroups(userLoginId);
 	}
 	
 	@GetMapping("/budgetGroup/{id}")

@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.smartfintrackapi.dtos.CategoryDTO;
 import com.api.smartfintrackapi.model.Category;
 import com.api.smartfintrackapi.repository.CategoryRepository;
+import com.api.smartfintrackapi.service.CategoryService;
 
 @RestController
 @RequestMapping(value="/api")
@@ -23,12 +25,15 @@ public class CategoryController {
 	@Autowired
 	CategoryRepository categoryRepository;
 	
-	@GetMapping("/categories")
-	public List<Category> listCategory(){
-		return categoryRepository.findAll();
+	@Autowired 
+	CategoryService categoryService;
+	
+	@GetMapping("/categories/{userLoginId}")
+	public List<CategoryDTO> listCategory(@PathVariable Long userLoginId){
+		return categoryService.findAllCategories(userLoginId);
 	}
 	
-	@GetMapping("/category/{id}")
+	@GetMapping("/category/{id}/{userLoginId}")
 	public Optional<Category> listCategoryUnic(@PathVariable(value="id") long id){
 		return categoryRepository.findById(id);
 	}

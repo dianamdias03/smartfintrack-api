@@ -1,5 +1,6 @@
 package com.api.smartfintrackapi.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,5 @@ import com.api.smartfintrackapi.model.BudgetGroup;
 @Repository
 public interface BudgetGroupRepository extends JpaRepository<BudgetGroup, Long>{
 	Optional<BudgetGroup> findById(Long id);
+	List<BudgetGroup> findByUserLoginId(Long userLoginId);
 }
