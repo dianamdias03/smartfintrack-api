@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-        .allowedOrigins("http://localhost:3000") // ou "*" para permitir todas as origens
+        .allowedOrigins("http://localhost:3000", "https://smartfintrack-app.vercel.app")
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
         .allowedHeaders("*");
         //.allowCredentials(true);
