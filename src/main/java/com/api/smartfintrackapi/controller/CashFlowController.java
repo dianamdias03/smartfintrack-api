@@ -1,7 +1,10 @@
 package com.api.smartfintrackapi.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,4 +69,16 @@ public class CashFlowController {
 		List<CashFlow> cashFlows = cashFlowsRepository.findAllById(data);
 		cashFlowsRepository.deleteAll(cashFlows);
 	}
+	
+	@GetMapping("/dashboard/{userLoginId}")
+    public Map<String, BigDecimal> getDashboardSummary(@PathVariable Long userLoginId) {
+		Map<String, BigDecimal> summary = new HashMap<String, BigDecimal>();
+        summary.put("totalRevenue", cashFlowService.getTotalRevenue(userLoginId));
+        summary.put("totalExpense", cashFlowService.getTotalExpense(userLoginId));
+        summary.put("totalRevenueLast30Days", cashFlowService.getTotalRevenueLast30Days(userLoginId));
+        summary.put("totalExpenseLast30Days", cashFlowService.getTotalExpenseLast30Days(userLoginId));
+        summary.put("remainingBalance", cashFlowService.getRemainingBalance(userLoginId));
+        summary.put("expensePercentage", cashFlowService.getExpensePercentage(userLoginId));
+        return summary;
+    }
 }

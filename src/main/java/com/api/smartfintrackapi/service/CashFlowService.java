@@ -1,6 +1,8 @@
 package com.api.smartfintrackapi.service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -100,4 +102,42 @@ public class CashFlowService {
             .reduce(BigDecimal.ZERO, BigDecimal::add);
         return budgetGroup.getBudget().add(totalCashFlows);
     }	
+	
+	public BigDecimal getTotalRevenue(Long userLoginId) {
+        return cashFlowRepository.totalRevenue(userLoginId);
+    }
+
+    public BigDecimal getTotalExpense(Long userLoginId) {
+        return cashFlowRepository.totalExpense(userLoginId);
+    }
+
+    public BigDecimal getTotalRevenueLast30Days(Long userLoginId) {
+        LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
+        return cashFlowRepository.totalRevenueLast30Days(thirtyDaysAgo, userLoginId);
+    }
+
+    public BigDecimal getTotalExpenseLast30Days(Long userLoginId) {
+        LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
+        return cashFlowRepository.totalExpenseLast30Days(thirtyDaysAgo, userLoginId);
+    }
+
+    public BigDecimal getRemainingBalance(Long userLoginId) {
+        BigDecimal totalRevenue = getTotalRevenue(userLoginId);
+        BigDecimal totalExpense = getTotalExpense(userLoginId);
+        return totalRevenue.subtract(totalExpense);
+    }
+    
+    public BigDecimal getExpensePercentage(Long userLoginId) {
+        BigDecimal totalRevenue = getTotalRevenue(userLoginId);
+        BigDecimal totalExpense = getTotalExpense(userLoginId);
+
+        // Evita divisão por zero
+        if (totalRevenue.compareTo(BigDecimal.ZERO) == 0) {
+            return BigDecimal.ZERO;
+        }
+
+        return totalExpense
+                .divide(totalRevenue, 4, RoundingMode.HALF_UP)
+                .multiply(BigDecimal.valueOf(100)); 
+    }
 }
